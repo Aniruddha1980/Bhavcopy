@@ -1,5 +1,5 @@
 mplfinance
+plotly
 matplotlib==3.5.1
 streamlit
-plotly
 git+https://github.com/StreamAlpha/pynse.git
