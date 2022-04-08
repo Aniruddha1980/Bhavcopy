@@ -1,5 +1,5 @@
+streamlit
+matplotlib
 mplfinance
 plotly
-matplotlib~=3.5.1
-streamlit
 git+https://github.com/StreamAlpha/pynse.git
