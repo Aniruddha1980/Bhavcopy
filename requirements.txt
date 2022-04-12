@@ -1,5 +1,5 @@
+matplotlib==3.5.1
 mplfinance==0.12.8b9
 plotly==5.7.0
-pynse==0.1.5
-streamlit==1.8.1
 git+https://github.com/StreamAlpha/pynse.git
+streamlit==1.8.1
