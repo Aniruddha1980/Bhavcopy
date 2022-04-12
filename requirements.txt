@@ -1,0 +1,4 @@
+mplfinance==0.12.8b9
+plotly==5.7.0
+pynse==0.1.5
+streamlit==1.8.1
