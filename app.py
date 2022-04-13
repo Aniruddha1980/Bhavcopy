@@ -1,7 +1,12 @@
+"""
+Created on Fri Apr 1 14:36:49 2019
+@author: Aniruddha Thakur
+"""
+
 import streamlit as st
 from pynse import *
 import datetime
-#import matplotlib.pyplot as plt
+import matplotlib.pyplot as plt
 import mplfinance as mpf
 import plotly.express as px
 
@@ -152,10 +157,8 @@ def stock_oi_data():
         st.write(data)
 def future_builtup():
     with st.sidebar:
-        from_date = st.date_input(
-            "From Date", datetime.date.today() - datetime.timedelta(days=1)
-        )
-        to_date = st.date_input("To Date", datetime.date.today())
+        from_date = st.date_input("From Date", datetime.date.today() - datetime.timedelta(days=2))
+        to_date = st.date_input("To Date", datetime.date.today() - datetime.timedelta(days=1))
     if to_date < from_date or to_date > datetime.date.today():
         st.error("check from date and to date")
     else:
@@ -271,7 +274,7 @@ def get_expiry_dates(symbol, req_date):
 def historical_option_chain():
     with st.sidebar:
         symbol = st.selectbox("Symbol", nse.symbols[IndexSymbol.FnO.name])
-        req_date = st.date_input("Date", value=datetime.date.today())
+        req_date = st.date_input("Date", datetime.date.today() - datetime.timedelta(days=1))
         expiry_list = get_expiry_dates(symbol, req_date)
         expiry_list = [d.date() for d in expiry_list]
         expiry_date = st.selectbox("Expiry Date", expiry_list)
@@ -359,24 +362,20 @@ def point_loss(call_data, put_data, strike):
     call_loss = (strike - itm_calls["STRIKE_PR"]) * itm_calls["OPEN_INT"]
     put_loss = (itm_puts["STRIKE_PR"] - strike) * itm_puts["OPEN_INT"]
     return call_loss.sum() + put_loss.sum()
-#def max_pain():
-#    with st.sidebar:
-#        symbol = st.selectbox("Symbol", nse.symbols[IndexSymbol.FnO.name])
-#        req_date = st.date_input("From Date", datetime.date.today())
-#        expiry_list = get_expiry_dates(symbol, req_date)
-#        expiry_list = [d.date() for d in expiry_list]
-#        expiry_date = st.selectbox("Expiry Date", expiry_list)
-#    call_data, put_data, futures_price, atm_strike = bhavcopy_to_option_chain(
-#        symbol, req_date, expiry_date
-#    )
-#    loss = call_data["STRIKE_PR"].apply(
-##        lambda x: point_loss(call_data, put_data, x)
-#    )
-##    max_pain = loss.idxmin()
-#    ax = loss.plot(figsize=(8, 5), title=f"{symbol} max Pain")
-#    plt.axvline(x=max_pain)
-#    plt.text(max_pain, 0, f"Max Pain = {max_pain}", rotation=90)
-#    st.write(ax.get_figure())
+def max_pain():
+    with st.sidebar:
+        symbol = st.selectbox("Symbol", nse.symbols[IndexSymbol.FnO.name])
+        req_date = st.date_input("From Date", datetime.date.today() - datetime.timedelta(days=1))
+        expiry_list = get_expiry_dates(symbol, req_date)
+        expiry_list = [d.date() for d in expiry_list]
+        expiry_date = st.selectbox("Expiry Date", expiry_list)
+        call_data, put_data, futures_price, atm_strike = bhavcopy_to_option_chain(symbol, req_date, expiry_date)
+    loss = call_data["STRIKE_PR"].apply(lambda x: point_loss(call_data, put_data, x))
+    max_pain = loss.idxmin()
+    ax = loss.plot(figsize=(8, 5), title=f"{symbol} max Pain")
+    plt.axvline(x=max_pain)
+    plt.text(max_pain, 0, f"Max Pain = {max_pain}", rotation=90)
+    st.write(ax.get_figure())
 analysis_dict = {
     "Bhavcopy": bhavcopy_display,
     "Stock Delivery Data": stock_deliv_data,
@@ -384,8 +383,8 @@ analysis_dict = {
     "Stock OI Data": stock_oi_data,
     "Future Builtup": future_builtup,
     "Historical Option Chain": historical_option_chain,
-    "Put Call Ratio": put_call_ratio
-#    "Max Pain": max_pain,
+    "Put Call Ratio": put_call_ratio,
+    "Max Pain": max_pain
 }
 
 with st.sidebar:
