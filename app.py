@@ -395,5 +395,19 @@ with st.sidebar:
     selected_analysis = st.radio("Select Analysis", list(analysis_dict.keys()))
     st.write("---")
 
+if __name__ == '__main__': 
+
+    market = nse.market_status()
+    market_time = market['marketState'][0]['marketStatus']
+
+    date_stamp = time.strftime('%a , %d  %b %Y , %I:%M %p',time.localtime())
+    time_stamp = ('%H:%M',time.localtime())
+    # d = st.columns(3)
+    col1,col2,col3 = st.columns(3)
+    with col1:
+        st.write('Market Status: ',market_time)
+    with col3 :
+        st.write(date_stamp)
+
 st.header(selected_analysis)
 analysis_dict[selected_analysis]()
