@@ -278,7 +278,7 @@ def historical_option_chain():
     with st.sidebar:
         symbol = st.selectbox("Symbol", nse.symbols[IndexSymbol.FnO.name])
         #        req_date = st.date_input("From Date", datetime.date.today() - datetime.timedelta(days=10))
-        cal_date = datetime.date.today() - datetime.timedelta(days=6)
+        cal_date = datetime.date.today() - datetime.timedelta(days=10)
         trading_days = nse.get_hist(from_date=cal_date).index
         trading_days = list(trading_days.map(lambda x: x.date()))
         *x, req_date = trading_days
