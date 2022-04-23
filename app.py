@@ -9,7 +9,10 @@ import datetime
 import matplotlib.pyplot as plt
 import mplfinance as mpf
 import plotly.express as px
+<<<<<<< HEAD
+=======
 import os
+>>>>>>> 46baf670f4c081c0a1a24f1c198557e9ea8ccafe
 
 nse = Nse()
 st.set_page_config(layout="wide")
@@ -158,11 +161,22 @@ def stock_oi_data():
         st.write(data)
 def future_builtup():
     with st.sidebar:
+<<<<<<< HEAD
+        from_date = st.date_input("From Date", datetime.date.today() - datetime.timedelta(days=6))
+        to_date = st.date_input("To Date", datetime.date.today())
+    if to_date < from_date or to_date > datetime.date.today():
+        st.error("check from date and to date")
+    else:
+        trading_days = nse.get_hist(from_date=from_date, to_date=to_date).index
+        trading_days = list(trading_days.map(lambda x: x.date()))
+        *x, to_date = trading_days
+=======
         from_date = st.date_input("From Date", datetime.date.today() - datetime.timedelta(days=2))
         to_date = st.date_input("To Date", datetime.date.today() - datetime.timedelta(days=1))
     if to_date < from_date or to_date > datetime.date.today():
         st.error("check from date and to date")
     else:
+>>>>>>> 46baf670f4c081c0a1a24f1c198557e9ea8ccafe
         bhav_1 = nse.bhavcopy_fno(to_date)
         bhav_2 = nse.bhavcopy_fno(from_date)
         bhav_1 = bhav_1[(bhav_1.INSTRUMENT.isin(["FUTSTK", "FUTIDX"]))]
@@ -275,7 +289,16 @@ def get_expiry_dates(symbol, req_date):
 def historical_option_chain():
     with st.sidebar:
         symbol = st.selectbox("Symbol", nse.symbols[IndexSymbol.FnO.name])
+<<<<<<< HEAD
+        #        req_date = st.date_input("From Date", datetime.date.today() - datetime.timedelta(days=10))
+        cal_date = datetime.date.today() - datetime.timedelta(days=6)
+        trading_days = nse.get_hist(from_date=cal_date).index
+        trading_days = list(trading_days.map(lambda x: x.date()))
+        *x, req_date = trading_days
+        req_date = st.date_input("From Date", req_date, )
+=======
         req_date = st.date_input("Date", datetime.date.today() - datetime.timedelta(days=1))
+>>>>>>> 46baf670f4c081c0a1a24f1c198557e9ea8ccafe
         expiry_list = get_expiry_dates(symbol, req_date)
         expiry_list = [d.date() for d in expiry_list]
         expiry_date = st.selectbox("Expiry Date", expiry_list)
@@ -366,7 +389,16 @@ def point_loss(call_data, put_data, strike):
 def max_pain():
     with st.sidebar:
         symbol = st.selectbox("Symbol", nse.symbols[IndexSymbol.FnO.name])
+<<<<<<< HEAD
+#        req_date = st.date_input("From Date", datetime.date.today() - datetime.timedelta(days=10))
+        cal_date = datetime.date.today() - datetime.timedelta(days=6)
+        trading_days = nse.get_hist(from_date=cal_date).index
+        trading_days = list(trading_days.map(lambda x: x.date()))
+        *x, req_date = trading_days
+        req_date = st.date_input("From Date", req_date, )
+=======
         req_date = st.date_input("From Date", datetime.date.today() - datetime.timedelta(days=1))
+>>>>>>> 46baf670f4c081c0a1a24f1c198557e9ea8ccafe
         expiry_list = get_expiry_dates(symbol, req_date)
         expiry_list = [d.date() for d in expiry_list]
         expiry_date = st.selectbox("Expiry Date", expiry_list)
