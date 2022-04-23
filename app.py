@@ -397,7 +397,5 @@ with st.sidebar:
     selected_analysis = st.radio("Select Analysis", list(analysis_dict.keys()))
     st.write("---")
 
-if __name__ == '__main__': 
-
-    st.header(selected_analysis)
-    analysis_dict[selected_analysis]()
+st.header(selected_analysis)
+analysis_dict[selected_analysis]()
