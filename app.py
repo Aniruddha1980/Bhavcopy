@@ -162,9 +162,9 @@ def future_builtup():
     if to_date < from_date or to_date > datetime.date.today():
         st.error("check from date and to date")
     else:
-        trading_days = nse.get_hist(from_date=from_date, to_date=to_date).index
-        trading_days = list(trading_days.map(lambda x: x.date()))
-        *x, to_date = trading_days
+    #    trading_days = nse.get_hist(from_date=from_date, to_date=to_date).index
+    #    trading_days = list(trading_days.map(lambda x: x.date()))
+    #    *x, to_date = trading_days
         bhav_1 = nse.bhavcopy_fno(to_date)
         bhav_2 = nse.bhavcopy_fno(from_date)
         bhav_1 = bhav_1[(bhav_1.INSTRUMENT.isin(["FUTSTK", "FUTIDX"]))]
