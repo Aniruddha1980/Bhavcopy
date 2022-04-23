@@ -157,7 +157,7 @@ def stock_oi_data():
         st.write(data)
 def future_builtup():
     with st.sidebar:
-        from_date = st.date_input("From Date", datetime.date.today() - datetime.timedelta(days=4))
+        from_date = st.date_input("From Date", datetime.date.today() - datetime.timedelta(days=6))
         to_date = st.date_input("To Date", datetime.date.today())
     if to_date < from_date or to_date > datetime.date.today():
         st.error("check from date and to date")
@@ -278,44 +278,48 @@ def historical_option_chain():
     with st.sidebar:
         symbol = st.selectbox("Symbol", nse.symbols[IndexSymbol.FnO.name])
         #        req_date = st.date_input("From Date", datetime.date.today() - datetime.timedelta(days=10))
-        cal_date = datetime.date.today() - datetime.timedelta(days=10)
-        trading_days = nse.get_hist(from_date=cal_date).index
-        trading_days = list(trading_days.map(lambda x: x.date()))
-        *x, req_date = trading_days
-        req_date = st.date_input("From Date", req_date, )
-        expiry_list = get_expiry_dates(symbol, req_date)
-        expiry_list = [d.date() for d in expiry_list]
-        expiry_date = st.selectbox("Expiry Date", expiry_list)
-    call_data, put_data, futures_price, atm_strike = bhavcopy_to_option_chain(
-        symbol, req_date, expiry_date
-    )
-    call_data = call_data[
-        [
-            # "STRIKE_PR",
-            "OPTION_TYP",
-            "CLOSE",
-            "CONTRACTS",
-            "OPEN_INT",
-            "CHG_IN_OI",
+        from_date = st.date_input("From Date", datetime.date.today() - datetime.timedelta(days=10))
+        to_date = st.date_input("To Date", datetime.date.today())
+        if to_date < from_date or to_date > datetime.date.today():
+            st.error("check from date and to date")
+        else:
+            trading_days = nse.get_hist(from_date=to_date).index
+            trading_days = list(trading_days.map(lambda x: x.date()))
+            *x, req_date = trading_days
+            req_date = st.date_input("From Date", req_date, )
+            expiry_list = get_expiry_dates(symbol, req_date)
+            expiry_list = [d.date() for d in expiry_list]
+            expiry_date = st.selectbox("Expiry Date", expiry_list)
+        call_data, put_data, futures_price, atm_strike = bhavcopy_to_option_chain(
+            symbol, req_date, expiry_date
+        )
+        call_data = call_data[
+            [
+                # "STRIKE_PR",
+                "OPTION_TYP",
+                "CLOSE",
+                "CONTRACTS",
+                "OPEN_INT",
+                "CHG_IN_OI",
+            ]
         ]
-    ]
-    put_data = put_data[
-        [
-            # "STRIKE_PR",
-            "OPTION_TYP",
-            "CLOSE",
-            "CONTRACTS",
-            "OPEN_INT",
-            "CHG_IN_OI",
+        put_data = put_data[
+            [
+                # "STRIKE_PR",
+                "OPTION_TYP",
+                "CLOSE",
+                "CONTRACTS",
+                "OPEN_INT",
+                "CHG_IN_OI",
+            ]
         ]
-    ]
-    option_chain = pd.concat([call_data, put_data], keys=["CALL", "PUT"], axis=1)
-    st.download_button(
-        "Download",
-        option_chain.to_csv(),
-        file_name=f"option_chain_{symbol}_{req_date}_exp_{expiry_date}.csv",
-    )
-    st.table(option_chain)
+        option_chain = pd.concat([call_data, put_data], keys=["CALL", "PUT"], axis=1)
+        st.download_button(
+            "Download",
+            option_chain.to_csv(),
+            file_name=f"option_chain_{symbol}_{req_date}_exp_{expiry_date}.csv",
+        )
+        st.table(option_chain)
 def put_call_ratio():
     with st.sidebar:
         symbol = st.selectbox("Symbol", nse.symbols[IndexSymbol.FnO.name])
