@@ -6,6 +6,8 @@ import mplfinance as mpf
 import plotly.express as px
 
 nse = Nse()
+st.set_page_config(layout="wide")
+
 def bhavcopy_display():
     with st.sidebar:
         st.write("Bhavcopy Inputs")
@@ -397,17 +399,5 @@ with st.sidebar:
 
 if __name__ == '__main__': 
 
-    market = nse.market_status()
-    market_time = market['marketState'][0]['marketStatus']
-
-    date_stamp = time.strftime('%a , %d  %b %Y , %I:%M %p',time.localtime())
-    time_stamp = ('%H:%M',time.localtime())
-    # d = st.columns(3)
-    col1,col2,col3 = st.columns(3)
-    with col1:
-        st.write('Market Status: ',market_time)
-    with col3 :
-        st.write(date_stamp)
-
-st.header(selected_analysis)
-analysis_dict[selected_analysis]()
+    st.header(selected_analysis)
+    analysis_dict[selected_analysis]()
