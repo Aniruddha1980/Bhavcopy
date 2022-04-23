@@ -15,7 +15,11 @@ st.set_page_config(layout="wide")
 def bhavcopy_display():
     with st.sidebar:
         st.write("Bhavcopy Inputs")
-        req_date = st.date_input("Select Date", datetime.date.today())
+        #    req_date = st.date_input("Select Date", datetime.date.today())
+        cal_date = datetime.date.today() - datetime.timedelta(days=6)
+        trading_days = nse.get_hist(from_date=cal_date).index
+        trading_days = list(trading_days.map(lambda x: x.date()))
+        *x, req_date = trading_days
         segment = st.selectbox("Select Segment", ["Cash", "FnO"])
     req_date = None if req_date >= datetime.date.today() else req_date
     if segment == "Cash":
