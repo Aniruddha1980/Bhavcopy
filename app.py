@@ -408,5 +408,6 @@ with st.sidebar:
     selected_analysis = st.radio("Select Analysis", list(analysis_dict.keys()))
     st.write("---")
 
+market = nse.market_status()
 st.header(selected_analysis)
 analysis_dict[selected_analysis]()
