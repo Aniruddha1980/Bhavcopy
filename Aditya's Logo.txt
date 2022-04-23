@@ -1,0 +1,4 @@
+#    st.markdown(
+#        'Contact us :) </br>[!["Buy Me A Coffee"]](https://t.me/TradingSenseDataTrading)',
+#        unsafe_allow_html=True,
+#    )

@@ -1,8 +1,3 @@
-"""
-Created on Fri Apr 1 14:36:49 2019
-@author: Aniruddha Thakur
-"""
-
 import streamlit as st
 from pynse import *
 import datetime
@@ -11,7 +6,6 @@ import mplfinance as mpf
 import plotly.express as px
 
 nse = Nse()
-st.set_page_config(layout="wide")
 def bhavcopy_display():
     with st.sidebar:
         st.write("Bhavcopy Inputs")
@@ -371,8 +365,12 @@ def max_pain():
         expiry_list = get_expiry_dates(symbol, req_date)
         expiry_list = [d.date() for d in expiry_list]
         expiry_date = st.selectbox("Expiry Date", expiry_list)
-        call_data, put_data, futures_price, atm_strike = bhavcopy_to_option_chain(symbol, req_date, expiry_date)
-    loss = call_data["STRIKE_PR"].apply(lambda x: point_loss(call_data, put_data, x))
+    call_data, put_data, futures_price, atm_strike = bhavcopy_to_option_chain(
+        symbol, req_date, expiry_date
+    )
+    loss = call_data["STRIKE_PR"].apply(
+        lambda x: point_loss(call_data, put_data, x)
+    )
     max_pain = loss.idxmin()
     ax = loss.plot(figsize=(8, 5), title=f"{symbol} max Pain")
     plt.axvline(x=max_pain)
@@ -386,14 +384,14 @@ analysis_dict = {
     "Future Builtup": future_builtup,
     "Historical Option Chain": historical_option_chain,
     "Put Call Ratio": put_call_ratio,
-    "Max Pain": max_pain
+    "Max Pain": max_pain,
 }
 
 with st.sidebar:
-    st.markdown(
-        'Contact us :) </br>[!["Buy Me A Coffee"]](https://t.me/TradingSenseDataTrading)',
-        unsafe_allow_html=True,
-    )
+#    st.markdown(
+#        'Buy Me A Coffee :) </br>[!["Buy Me A Coffee"](https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png)](https://www.buymeacoffee.com/StreamAlpha)',
+#        unsafe_allow_html=True,
+#    )
     selected_analysis = st.radio("Select Analysis", list(analysis_dict.keys()))
     st.write("---")
 
