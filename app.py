@@ -408,5 +408,15 @@ with st.sidebar:
     selected_analysis = st.radio("Select Analysis", list(analysis_dict.keys()))
     st.write("---")
 
+    # ---- HIDE STREAMLIT STYLE ----
+hide_st_style = """
+            <style>
+            #MainMenu {visibility: hidden;}
+            footer {visibility: hidden;}
+            header {visibility: hidden;}
+            </style>
+            """
+st.markdown(hide_st_style, unsafe_allow_html=True)
+
 st.header(selected_analysis)
 analysis_dict[selected_analysis]()
