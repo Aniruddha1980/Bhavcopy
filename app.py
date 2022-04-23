@@ -426,18 +426,18 @@ if __name__ == '__main__':
     # c9,c10,c11,c12,c13 = st.columns(5)
     
     with c1:
-        nifty =  nse.get_indices(IndexSymbol.Nifty50)
-        st.write('NIFTY50')
-        st.write(nifty['last'][0])
-        st.write(nifty['percentChange'][0],'%')
-        st.write(nifty['variation'][0])
+        print(nse.get_indices(IndexSymbol.Nifty50))
+   #     st.write('NIFTY50')
+   #     st.write(nifty['last'][0])
+   #     st.write(nifty['percentChange'][0],'%')
+   #     st.write(nifty['variation'][0])
 
     with c2:
-        niftybank =  nse.get_indices(IndexSymbol.NiftyBank)
-        st.write('NIFTYBANK')
-        st.write(niftybank['last'][0])
-        st.write(niftybank['percentChange'][0],'%')
-        st.write(niftybank['variation'][0])
+        print(nse.get_indices(IndexSymbol.NiftyBank))
+    #    st.write('NIFTYBANK')
+    #    st.write(niftybank['last'][0])
+    #    st.write(niftybank['percentChange'][0],'%')
+    #    st.write(niftybank['variation'][0])
 
 st.header(selected_analysis)
 analysis_dict[selected_analysis]()
