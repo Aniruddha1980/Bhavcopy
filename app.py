@@ -11,6 +11,10 @@ import mplfinance as mpf
 import plotly.express as px
 
 nse = Nse()
+#STREAMLIT_SERVER_PORT=80
+serverPort = 8080 
+
+
 st.set_page_config(layout="wide")
 def bhavcopy_display():
     with st.sidebar:
@@ -408,5 +412,115 @@ with st.sidebar:
     selected_analysis = st.radio("Select Analysis", list(analysis_dict.keys()))
     st.write("---")
 
+if __name__ == '__main__': 
+
+
+    market = nse.market_status()
+    market_time = market['marketState'][0]['marketStatus']
+
+    date_stamp = time.strftime('%a , %d  %b %Y , %I:%M %p',time.localtime())
+    time_stamp = ('%H:%M',time.localtime())
+   # d = st.columns(3)
+    col1,col2,col3 = st.columns(3)
+    with col1:
+        st.write('Market Status: ',market_time)
+    with col3 :
+        st.write(date_stamp)
+
+    c1,c2,c3,c4,c5,c6,c7,c8 = st.columns(8)
+    # c9,c10,c11,c12,c13 = st.columns(5)
+    
+    with c1:
+        nifty =  nse.get_indices(IndexSymbol.Nifty50)
+        st.write('NIFTY50')
+        st.write(nifty['last'][0])
+        st.write(nifty['percentChange'][0],'%')
+        st.write(nifty['variation'][0])
+
+    with c2:
+        niftybank =  nse.get_indices(IndexSymbol.NiftyBank)
+        st.write('NIFTYBANK')
+        st.write(niftybank['last'][0])
+        st.write(niftybank['percentChange'][0],'%')
+        st.write(niftybank['variation'][0])
+
+    with c3:
+        niftyauto =  nse.get_indices(IndexSymbol.NiftyAuto)
+        st.write('NIFTYAUTO')
+        st.write(niftyauto['last'][0])
+        st.write(niftyauto['percentChange'][0],'%')
+        st.write(niftyauto['variation'][0])
+    
+    with c4:
+        niftyfmcg =  nse.get_indices(IndexSymbol.NiftyFmcg)
+        st.write('NIFTYFMCG')
+        st.write(niftyfmcg['last'][0])
+        st.write(niftyfmcg['percentChange'][0],'%')
+        st.write(niftyfmcg['variation'][0])
+
+    with c5:
+        niftymetal =  nse.get_indices(IndexSymbol.NiftyMetal)
+        st.write('NIFTYMETAL')
+        st.write(niftymetal['last'][0])
+        st.write(niftymetal['variation'][0])
+        st.write(niftymetal['percentChange'][0],'%')
+    
+    with c6:
+        niftypharma =  nse.get_indices(IndexSymbol.NiftyPharma)
+        st.write('NIFTYPHARMA')
+        st.write(niftypharma['last'][0])
+        st.write(niftypharma['variation'][0])
+        st.write(niftypharma['percentChange'][0],'%')
+    
+    with c7:
+        niftypsubank =  nse.get_indices(IndexSymbol.NiftyPsuBank)
+        st.write('NIFTYPSUBANK')
+        st.write(niftypsubank['last'][0])
+        st.write(niftypsubank['variation'][0])
+        st.write(niftypsubank['percentChange'][0],'%')
+    
+    with c8:
+        niftypvtbank =  nse.get_indices(IndexSymbol.NiftyPvtBank)
+        st.write('NIFTYPVTBANK')
+        st.write(niftypvtbank['last'][0])
+        st.write(niftypvtbank['variation'][0])
+        st.write(niftypvtbank['percentChange'][0],'%')
+    
+    # with c9:
+    #     niftyit =  nse.get_indices(IndexSymbol.NiftyIt)
+    #     st.write('NIFTYIT')
+    #     st.write(niftyit['last'][0])
+    #     st.write(niftyit['variation'][0])
+    #     st.write(niftyit['percentChange'][0],'%')    
+
+    # with c10:
+    #     niftyenergy =  nse.get_indices(IndexSymbol.NiftyEnergy)
+    #     st.write('NIFTYENERGY')
+    #     st.write(niftyenergy['last'][0])
+    #     st.write(niftyenergy['percentChange'][0],'%')
+    #     st.write(niftyenergy['variation'][0])
+    # with c11:
+    #     niftyfinserv =  nse.get_indices(IndexSymbol.NiftyFinService)
+    #     st.write('NIFTYFINSERV')
+    #     st.write(niftyfinserv['last'][0])
+    #     st.write(niftyfinserv['percentChange'][0],'%')
+    #     st.write(niftyfinserv['variation'][0])
+
+    # with c12:
+    #     niftymedia =  nse.get_indices(IndexSymbol.NiftyMedia)
+    #     st.write('NIFTYMEDIA')
+    #     st.write(niftymedia['last'][0])
+    #     st.write(niftymedia['variation'][0])
+    #     st.write(niftymedia['percentChange'][0],'%')
+    # with c13:
+    #     niftyrealty =  nse.get_indices(IndexSymbol.NiftyRealty)
+    #     st.write('NIFTYREALTY')
+    #     st.write(niftyrealty['last'][0])
+    #     st.write(niftyrealty['variation'][0])
+    #     st.write(niftyrealty['percentChange'][0],'%')   
+        
+    sep_line = '''---'''
+    st.markdown(sep_line)
+    st.title('''Welcome to Stock Marker Analysis''')
 st.header(selected_analysis)
 analysis_dict[selected_analysis]()
