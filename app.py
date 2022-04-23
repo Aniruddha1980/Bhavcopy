@@ -410,17 +410,17 @@ with st.sidebar:
 
 if __name__ == '__main__': 
 
-    market = nse.market_status()
-    market_time = market['marketState'][0]['marketStatus']
+#    market = nse.market_status()
+#    market_time = market['marketState'][0]['marketStatus']
 
-    date_stamp = time.strftime('%a , %d  %b %Y , %I:%M %p',time.localtime())
-    time_stamp = ('%H:%M',time.localtime())
+#    date_stamp = time.strftime('%a , %d  %b %Y , %I:%M %p',time.localtime())
+#    time_stamp = ('%H:%M',time.localtime())
     # d = st.columns(3)
-    col1,col2,col3 = st.columns(3)
-    with col1:
-        st.write('Market Status: ',market_time)
-    with col3 :
-        st.write(date_stamp)
+#    col1,col2,col3 = st.columns(3)
+#    with col1:
+#        st.write('Market Status: ',market_time)
+#    with col3 :
+#        st.write(date_stamp)
 
     c1,c2,c3,c4,c5,c6,c7,c8 = st.columns(8)
     # c9,c10,c11,c12,c13 = st.columns(5)
