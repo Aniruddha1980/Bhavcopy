@@ -2,4 +2,4 @@ matplotlib==3.5.1
 mplfinance==0.12.8b9
 plotly==5.7.0
 streamlit==1.8.1
-git+https://github.com/Aniruddha1980/pynse.git
+
