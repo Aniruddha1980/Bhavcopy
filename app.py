@@ -4,7 +4,7 @@ Created on Fri Apr 1 14:36:49 2019
 """
 
 import streamlit as st
-from pynse import *
+from .pynse import *
 import datetime
 import matplotlib.pyplot as plt
 import mplfinance as mpf
