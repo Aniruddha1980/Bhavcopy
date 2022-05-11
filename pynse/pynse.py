@@ -943,7 +943,7 @@ class Nse:
         # otherwise download hisory  and append to file and drop duplicates
         # write that to csv file
         else:
-            _trading_days = self.get_hist(symbol='HDFC', from_date=previous_trading_day - dt.timedelta(7),
+            _trading_days = self.get_hist(symbol='SBIN', from_date=previous_trading_day - dt.timedelta(7),
                                           to_date=dt.date.today()).reset_index()[['Date']]
 
             trading_days = pd.concat(
