@@ -408,4 +408,4 @@ with st.sidebar:
     st.write("---")
 
 st.header(selected_analysis)
-analysis_dict[selected_analysis]()
+#analysis_dict[selected_analysis]()
