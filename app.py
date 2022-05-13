@@ -158,7 +158,7 @@ def stock_oi_data():
 def future_builtup():
     with st.sidebar:
         from_date = st.date_input("From Date", datetime.date.today() - datetime.timedelta(days=5))
-        to_date = st.date_input("To Date", datetime.date.today())
+        to_date = st.date_input("To Date", datetime.date.today() - datetime.timedelta(days=3))
         
     if to_date < from_date or to_date > datetime.date.today():
         st.error("check from date and to date")
