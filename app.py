@@ -40,7 +40,7 @@ def stock_deliv_data():
     for date in trading_days:
         try:
             bhav = nse.bhavcopy(date).loc[symbol]
-            bhav.set_index("DATE1", inplace=True)
+            bhav.set_index("DATE", inplace=True)
             data = data.append(bhav)
         except Exception as e:
             print(f"error {e} for {date}")
