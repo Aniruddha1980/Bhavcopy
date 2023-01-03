@@ -9,6 +9,7 @@ import datetime
 import matplotlib.pyplot as plt
 import mplfinance as mpf
 import plotly.express as px
+import pandas as pd
 
 nse = Nse()
 st.set_page_config(layout="wide")
@@ -40,7 +41,7 @@ def stock_deliv_data():
     for date in trading_days:
         try:
             bhav = nse.bhavcopy(date).loc[symbol]
-            bhav.set_index("DATE", inplace=True)
+            bhav.set_index("DATE1", inplace=True)
             data = data.append(bhav)
         except Exception as e:
             print(f"error {e} for {date}")
