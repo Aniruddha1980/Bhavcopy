@@ -165,67 +165,71 @@ def future_builtup():
         st.error("check from date and to date")
     else:
         
-        bhav_1 = nse.bhavcopy_fno(to_date)
-        bhav_2 = nse.bhavcopy_fno(from_date)
-        bhav_1 = bhav_1[(bhav_1.INSTRUMENT.isin(["FUTSTK", "FUTIDX"]))]
-        bhav_2 = bhav_2[(bhav_2.INSTRUMENT.isin(["FUTSTK", "FUTIDX"]))]
-        group_bhav_1 = bhav_1.groupby(bhav_1.index)
-        group_bhav_2 = bhav_2.groupby(bhav_2.index)
-        current_expiry_1 = group_bhav_1.EXPIRY_DT.min()
-        current_expiry_2 = group_bhav_2.EXPIRY_DT.min()
-        bhav_1["current_expiry"] = current_expiry_1
-        bhav_2["current_expiry"] = current_expiry_2
-        bhav_1 = bhav_1[bhav_1.EXPIRY_DT == bhav_1.current_expiry]
-        bhav_2 = bhav_2[bhav_2.EXPIRY_DT == bhav_2.current_expiry]
-        pch_oi = group_bhav_1["OPEN_INT"].sum() / group_bhav_2["OPEN_INT"].sum() - 1
-        pch_close = bhav_1.CLOSE / bhav_2.CLOSE - 1
-        builtup = pd.DataFrame({"pch_close": pch_close, "pch_oi": pch_oi})
-        builtup = builtup.reset_index()
-        fig = px.scatter(
-            builtup,
-            "pch_close",
-            "pch_oi",
-            hover_data=["SYMBOL"],
-            width=1280,
-            height=420,
-        )
-        fig.add_hline(y=0.0)
-        fig.add_vline(x=0.0)
-        st.write(fig)
-        cols = st.columns([1, 1])
-        with cols[0]:
-            st.write("## Long Builtup")
-            lb = (
-                builtup[(builtup.pch_close > 0) & (builtup.pch_oi > 0)]
-                .sort_values(by="pch_close", ascending=False)
-                .head()
+        try:
+            bhav_1 = nse.bhavcopy_fno(to_date)
+            bhav_2 = nse.bhavcopy_fno(from_date)
+        
+            bhav_1 = bhav_1[(bhav_1.INSTRUMENT.isin(["FUTSTK", "FUTIDX"]))]
+            bhav_2 = bhav_2[(bhav_2.INSTRUMENT.isin(["FUTSTK", "FUTIDX"]))]
+            group_bhav_1 = bhav_1.groupby(bhav_1.index)
+            group_bhav_2 = bhav_2.groupby(bhav_2.index)
+            current_expiry_1 = group_bhav_1.EXPIRY_DT.min()
+            current_expiry_2 = group_bhav_2.EXPIRY_DT.min()
+            bhav_1["current_expiry"] = current_expiry_1
+            bhav_2["current_expiry"] = current_expiry_2
+            bhav_1 = bhav_1[bhav_1.EXPIRY_DT == bhav_1.current_expiry]
+            bhav_2 = bhav_2[bhav_2.EXPIRY_DT == bhav_2.current_expiry]
+            pch_oi = group_bhav_1["OPEN_INT"].sum() / group_bhav_2["OPEN_INT"].sum() - 1
+            pch_close = bhav_1.CLOSE / bhav_2.CLOSE - 1
+            builtup = pd.DataFrame({"pch_close": pch_close, "pch_oi": pch_oi})
+            builtup = builtup.reset_index()
+            fig = px.scatter(
+                builtup,
+                "pch_close",
+                "pch_oi",
+                hover_data=["SYMBOL"],
+                width=1280,
+                height=420,
             )
-            st.write(lb)
-        with cols[1]:
-            st.write("## Short Builtup")
-            sb = (
-                builtup[(builtup.pch_close < 0) & (builtup.pch_oi > 0)]
-                .sort_values(by="pch_close", ascending=True)
-                .head()
-            )
-            st.write(sb)
-        cols = st.columns([1, 1])
-        with cols[0]:
-            st.write("## Long Unwinding")
-            lu = (
-                builtup[(builtup.pch_close < 0) & (builtup.pch_oi < 0)]
-                .sort_values(by="pch_close", ascending=True)
-                .head()
-            )
-            st.write(lu)
-        with cols[1]:
-            st.write("## Short Covering")
-            sc = (
-                builtup[(builtup.pch_close > 0) & (builtup.pch_oi < 0)]
-                .sort_values(by="pch_close", ascending=True)
-                .head()
-            )
-            st.write(sc)
+            fig.add_hline(y=0.0)
+            fig.add_vline(x=0.0)
+            st.write(fig)
+            cols = st.columns([1, 1])
+            with cols[0]:
+                st.write("## Long Builtup")
+                lb = (
+                    builtup[(builtup.pch_close > 0) & (builtup.pch_oi > 0)]
+                    .sort_values(by="pch_close", ascending=False)
+                    .head()
+                )
+                st.write(lb)
+            with cols[1]:
+                st.write("## Short Builtup")
+                sb = (
+                    builtup[(builtup.pch_close < 0) & (builtup.pch_oi > 0)]
+                    .sort_values(by="pch_close", ascending=True)
+                    .head()
+                )
+                st.write(sb)
+            cols = st.columns([1, 1])
+            with cols[0]:
+                st.write("## Long Unwinding")
+                lu = (
+                    builtup[(builtup.pch_close < 0) & (builtup.pch_oi < 0)]
+                    .sort_values(by="pch_close", ascending=True)
+                    .head()
+                )
+                st.write(lu)
+            with cols[1]:
+                st.write("## Short Covering")
+                sc = (
+                    builtup[(builtup.pch_close > 0) & (builtup.pch_oi < 0)]
+                    .sort_values(by="pch_close", ascending=True)
+                    .head()
+                )
+                st.write(sc)
+        except Exception as e:
+            st.error("Please choose weekdays")
 def bhavcopy_to_option_chain(symbol, date, expiry_date=None):
     expiry_date = expiry_date or get_expiry_dates(symbol, date)[0]
     bhavcopy = nse.bhavcopy_fno(date)
